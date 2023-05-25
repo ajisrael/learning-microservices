@@ -3,3 +3,6 @@
   the root package, then that class will not be analyzed by spring (by default)
 - When adding a new project to a directory and having multiple projects in the same intellij session,
   be sure to click the + in the Maven tab to add a new Maven profile for the new project.
+- To run multiple instances of a project, go to:
+  Run -> Edit Configurations -> Select project -> Modify Options -> Allow Multiple Instances
+- 
