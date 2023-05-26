@@ -1,0 +1,13 @@
+version: '3'
+services:
+  axonserver:
+    container_name: learning_microservices
+    image: axoniq/axonserver:latest
+    environment:
+      - AXONIQ_AXONSERVER_DEVMODE_ENABLED=true
+    ports:
+      - 8024:8024
+      - 8124:8124
+    volumes:
+      - ./data:/data
+    command: --server.port=8024 --server.hostname=0.0.0.0
