@@ -5,4 +5,4 @@
   be sure to click the + in the Maven tab to add a new Maven profile for the new project.
 - To run multiple instances of a project, go to:
   Run -> Edit Configurations -> Select project -> Modify Options -> Allow Multiple Instances
-- 
+- No args constructor on aggregate is used at startup to build current state of aggregate from events
