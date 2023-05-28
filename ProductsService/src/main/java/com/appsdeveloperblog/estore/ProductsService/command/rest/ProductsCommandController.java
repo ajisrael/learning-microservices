@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.estore.ProductsService.rest;
+package com.appsdeveloperblog.estore.ProductsService.command.rest;
 
 import com.appsdeveloperblog.estore.ProductsService.command.CreateProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/products") // http://localhost:8080/products
-public class ProductsController {
+public class ProductsCommandController {
 
     // Property based dependency injection
 //    @Autowired
@@ -27,7 +27,7 @@ public class ProductsController {
 
     // Constructor based dependency injection
     @Autowired
-    public ProductsController(Environment environment, CommandGateway commandGateway) {
+    public ProductsCommandController(Environment environment, CommandGateway commandGateway) {
         this.environment = environment;
         this.commandGateway = commandGateway;
     }
