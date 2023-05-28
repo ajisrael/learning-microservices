@@ -1,6 +1,8 @@
 package com.appsdeveloperblog.estore.ProductsService.command.interceptors;
 
 import com.appsdeveloperblog.estore.ProductsService.command.CreateProductCommand;
+import com.appsdeveloperblog.estore.ProductsService.core.data.ProductLookupEntity;
+import com.appsdeveloperblog.estore.ProductsService.core.data.ProductLookupRepository;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.slf4j.Logger;
@@ -16,6 +18,12 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProductCommandInterceptor.class);
 
+    private final ProductLookupRepository productLookupRepository;
+
+    public CreateProductCommandInterceptor(ProductLookupRepository productLookupRepository) {
+        this.productLookupRepository = productLookupRepository;
+    }
+
     @Override
     public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(
             List<? extends CommandMessage<?>> messages) {
@@ -26,7 +34,16 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
             if (CreateProductCommand.class.equals(command.getPayloadType())) {
 
                 CreateProductCommand createProductCommand = (CreateProductCommand) command.getPayload();
-                
+
+                ProductLookupEntity productLookupEntity = productLookupRepository.findByProductIdOrTitle(
+                        createProductCommand.getProductId(), createProductCommand.getTitle());
+
+                if (productLookupEntity != null) {
+                    throw new IllegalStateException(
+                            String.format("Product with productId %s or title %s already exists",
+                                    createProductCommand.getProductId(), createProductCommand.getTitle())
+                    );
+                }
             }
 
             return command;
