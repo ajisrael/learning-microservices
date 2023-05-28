@@ -8,3 +8,6 @@
 - No args constructor on aggregate is used at startup to build current state of aggregate from events
 - To access the h2 database navigate to the ApiGateway instance followed by the path to the micro-service (products-service)
   and then h2-console. So for this project running locally its: http://localhost:8082/products-service/h2-console
+- Links to hibernate validator documentatin:
+  - http://hibernate.org/validator/
+  - http://hibernate.org/validator/documentation/
