@@ -11,3 +11,7 @@
 - Links to hibernate validator documentatin:
   - http://hibernate.org/validator/
   - http://hibernate.org/validator/documentation/
+- Processing group is used to group event handlers together. By default uses package to map them together, so if your
+  event handlers that should be in the same processing goup are in different packages you should group them together
+  with the @ProcessingGroup annotation. Putting event handlers in the same processing group puts them into the same 
+  thread and uses a tracking token to ensure that the events are only handled once within that thread.
