@@ -29,10 +29,6 @@ public class ProductAggregate {
             throw new IllegalArgumentException("Price cannot be less than or equal to zero");
         }
 
-        if (createProductCommand.getTitle() == null || createProductCommand.getTitle().isBlank()) {
-            throw new IllegalArgumentException("Title cannot be empty");
-        }
-
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
 
         BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
