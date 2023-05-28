@@ -26,10 +26,7 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
             if (CreateProductCommand.class.equals(command.getPayloadType())) {
 
                 CreateProductCommand createProductCommand = (CreateProductCommand) command.getPayload();
-
-                if (createProductCommand.getTitle() == null || createProductCommand.getTitle().isBlank()) {
-                    throw new IllegalArgumentException("Title cannot be empty");
-                }
+                
             }
 
             return command;
