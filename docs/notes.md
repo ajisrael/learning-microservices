@@ -6,3 +6,5 @@
 - To run multiple instances of a project, go to:
   Run -> Edit Configurations -> Select project -> Modify Options -> Allow Multiple Instances
 - No args constructor on aggregate is used at startup to build current state of aggregate from events
+- To access the h2 database navigate to the ApiGateway instance followed by the path to the micro-service (products-service)
+  and then h2-console. So for this project running locally its: http://localhost:8082/products-service/h2-console
