@@ -5,8 +5,10 @@ import com.appsdeveloperblog.estore.ProductsService.core.data.ProductsRepository
 import com.appsdeveloperblog.estore.ProductsService.core.events.ProductCreatedEvent;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @ProcessingGroup("product-group")
@@ -16,6 +18,16 @@ public class ProductProjection {
 
     public ProductProjection(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
+    }
+
+    @ExceptionHandler(resultType = Exception.class)
+    public void handle(Exception exception) throws Exception {
+        throw exception;
+    }
+
+    @ExceptionHandler(resultType = IllegalArgumentException.class)
+    public void handle(IllegalArgumentException exception) {
+        // Log error message
     }
 
     @EventHandler
