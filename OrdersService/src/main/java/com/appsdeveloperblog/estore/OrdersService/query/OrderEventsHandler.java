@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
+@ProcessingGroup("order-group")
 public class OrderEventsHandler {
 
     private final OrdersRepository ordersRepository;
