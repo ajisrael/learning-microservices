@@ -1,5 +1,6 @@
 package com.appsdeveloperblog.estore.ProductsService.command;
 
+import com.appsdeveloperblog.estore.ProductsService.command.commands.CreateProductCommand;
 import com.appsdeveloperblog.estore.ProductsService.core.events.ProductCreatedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;

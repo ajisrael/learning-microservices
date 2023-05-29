@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.estore.ProductsService.command;
+package com.appsdeveloperblog.estore.ProductsService.command.commands;
 
 import lombok.Builder;
 import lombok.Data;

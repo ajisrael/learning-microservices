@@ -1,6 +1,6 @@
 package com.appsdeveloperblog.estore.ProductsService.command.rest;
 
-import com.appsdeveloperblog.estore.ProductsService.command.CreateProductCommand;
+import com.appsdeveloperblog.estore.ProductsService.command.commands.CreateProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
