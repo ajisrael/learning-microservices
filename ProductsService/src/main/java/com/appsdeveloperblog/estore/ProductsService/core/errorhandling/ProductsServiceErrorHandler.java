@@ -24,7 +24,7 @@ public class ProductsServiceErrorHandler {
     @ExceptionHandler(value = {CommandExecutionException.class})
     public ResponseEntity<Object> handleCommandExecutionException(CommandExecutionException exception, WebRequest webRequest) {
 
-        // Note: this works because axon framework stages events to be processed. So even though the exception is being thrown
+        // Note: This works because axon framework stages events to be processed. So even though the exception is being thrown
         // after the event is applied to the aggregate lifecycle. The exception is being handled here before the event is dispatched
         // and handled in the event handler on the aggregate
 
