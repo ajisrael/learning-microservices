@@ -1,10 +1,9 @@
 package com.appsdeveloperblog.estore.OrdersService.command.rest;
 
-import com.appsdeveloperblog.estore.OrdersService.command.CreateOrderCommand;
-import com.appsdeveloperblog.estore.OrdersService.command.OrderStatus;
+import com.appsdeveloperblog.estore.OrdersService.command.commands.CreateOrderCommand;
+import com.appsdeveloperblog.estore.OrdersService.core.model.OrderStatus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
