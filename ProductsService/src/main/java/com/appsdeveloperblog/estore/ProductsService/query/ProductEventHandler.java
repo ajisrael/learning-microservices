@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ProcessingGroup("product-group")
-public class ProductProjection {
+public class ProductEventHandler {
 
     private final ProductsRepository productsRepository;
 
-    public ProductProjection(ProductsRepository productsRepository) {
+    public ProductEventHandler(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
 
