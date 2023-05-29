@@ -33,6 +33,11 @@ public class OrderAggregate {
 
     @EventHandler
     public void on(OrderCreatedEvent orderCreatedEvent) {
-        BeanUtils.copyProperties(orderCreatedEvent, this);
+        this.orderId = orderCreatedEvent.getOrderId();
+        this.productId = orderCreatedEvent.getProductId();
+        this.userId = orderCreatedEvent.getUserId();
+        this.quantity = orderCreatedEvent.getQuantity();
+        this.addressId = orderCreatedEvent.getAddressId();
+        this.orderStatus = orderCreatedEvent.getOrderStatus();
     }
 }
