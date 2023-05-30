@@ -2,7 +2,9 @@ package com.appsdeveloperblog.estore.ProductsService.command;
 
 import com.appsdeveloperblog.estore.ProductsService.command.commands.CreateProductCommand;
 import com.appsdeveloperblog.estore.ProductsService.core.events.ProductCreatedEvent;
+import com.appsdeveloperblog.estore.core.commands.CancelProductReservationCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
+import com.appsdeveloperblog.estore.core.events.ProductReservationCanceledEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
@@ -61,6 +63,21 @@ public class ProductAggregate {
         AggregateLifecycle.apply(productReservedEvent);
     }
 
+    @CommandHandler
+    public void handle(CancelProductReservationCommand cancelProductReservationCommand) {
+
+        ProductReservationCanceledEvent productReservationCanceledEvent =
+                ProductReservationCanceledEvent.builder()
+                        .orderId(cancelProductReservationCommand.getOrderId())
+                        .productId(cancelProductReservationCommand.getProductId())
+                        .quantity(cancelProductReservationCommand.getQuantity())
+                        .reason(cancelProductReservationCommand.getReason())
+                        .userId(cancelProductReservationCommand.getUserId())
+                        .build();
+
+        AggregateLifecycle.apply(productReservationCanceledEvent);
+    }
+
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent) {
         this.productId = productCreatedEvent.getProductId();
@@ -72,5 +89,10 @@ public class ProductAggregate {
     @EventSourcingHandler
     public void on(ProductReservedEvent productReservedEvent) {
         this.quantity -= productReservedEvent.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservationCanceledEvent productReservationCanceledEvent) {
+        this.quantity += productReservationCanceledEvent.getQuantity();
     }
 }
