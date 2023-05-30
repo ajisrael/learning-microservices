@@ -32,7 +32,7 @@ public class ProductEventsHandler {
 
     @ExceptionHandler(resultType = IllegalArgumentException.class)
     public void handle(IllegalArgumentException exception) {
-        // Log error message
+        LOGGER.error(exception.getMessage());
     }
 
     @EventHandler
