@@ -1,11 +1,15 @@
 package com.appsdeveloperblog.estore.OrdersService.saga;
 
 import com.appsdeveloperblog.estore.OrdersService.command.commands.ApproveOrderCommand;
+import com.appsdeveloperblog.estore.OrdersService.command.commands.RejectOrderCommand;
 import com.appsdeveloperblog.estore.OrdersService.core.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.OrdersService.core.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.OrdersService.core.events.OrderRejectedEvent;
+import com.appsdeveloperblog.estore.core.commands.CancelProductReservationCommand;
 import com.appsdeveloperblog.estore.core.commands.ProcessPaymentCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.PaymentProcessedEvent;
+import com.appsdeveloperblog.estore.core.events.ProductReservationCanceledEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.core.model.User;
 import com.appsdeveloperblog.estore.core.query.FetchUserPaymentDetailsQuery;
@@ -83,11 +87,13 @@ public class OrderSaga {
         } catch (Exception exception) {
             LOGGER.error(exception.getMessage());
             // Start compensating transaction
+            cancelProductReservation(productReservedEvent, exception.getMessage());
             return;
         }
 
         if (userPaymentDetails == null) {
             // Start compensating transaction
+            cancelProductReservation(productReservedEvent, "Could not fetch user payment details");
             return;
         }
 
@@ -100,17 +106,36 @@ public class OrderSaga {
                 .build();
 
         String result = null;
+
         try {
             commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
         } catch (Exception exception){
             LOGGER.error(exception.getMessage());
             // Start a compensating transaction
+            cancelProductReservation(productReservedEvent, exception.getMessage());
+            return;
         }
 
         if (result == null) {
             LOGGER.info("The ProcessPaymentCommand resulted in Null. Initiating a compensating transaction");
             // Start a compensating transaction
+            cancelProductReservation(productReservedEvent, "Could not process user payment with provided payment details");
+            return;
         }
+    }
+
+    private void cancelProductReservation(ProductReservedEvent productReservedEvent, String reason) {
+
+        CancelProductReservationCommand cancelProductReservationCommand =
+                CancelProductReservationCommand.builder()
+                        .orderId(productReservedEvent.getOrderId())
+                        .productId(productReservedEvent.getProductId())
+                        .quantity(productReservedEvent.getQuantity())
+                        .userId(productReservedEvent.getUserId())
+                        .reason(reason)
+                        .build();
+
+        commandGateway.send(cancelProductReservationCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -127,5 +152,20 @@ public class OrderSaga {
     public void handle(OrderApprovedEvent orderApprovedEvent) {
         LOGGER.info("Order is approved. Order Saga is complete for orderId: " + orderApprovedEvent.getOrderId());
         //SagaLifecycle.end();
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservationCanceledEvent productReservationCanceledEvent) {
+        // Create and send a RejectOrderCommand
+        RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(
+                productReservationCanceledEvent.getOrderId(), productReservationCanceledEvent.getReason());
+
+        commandGateway.send(rejectOrderCommand);
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderRejectedEvent orderRejectedEvent) {
+        LOGGER.info("Successfully rejected order with id " + orderRejectedEvent.getOrderId());
     }
 }
