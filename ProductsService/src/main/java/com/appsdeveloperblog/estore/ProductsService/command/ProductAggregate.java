@@ -17,7 +17,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "productSnapshotTriggerDefinition")
 @NoArgsConstructor
 public class ProductAggregate {
 
