@@ -6,7 +6,7 @@ import com.appsdeveloperblog.estore.OrdersService.command.commands.RejectOrderCo
 import com.appsdeveloperblog.estore.OrdersService.core.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.OrdersService.core.events.OrderCreatedEvent;
 import com.appsdeveloperblog.estore.OrdersService.core.events.OrderRejectedEvent;
-import com.appsdeveloperblog.estore.OrdersService.core.model.OrderStatus;
+import com.appsdeveloperblog.estore.core.model.OrderStatus;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
